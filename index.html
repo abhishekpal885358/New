@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abhishek Pal | Creative Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <style>
+        /* FONTS IMPORT */
+        @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap'); /* Rosemary Style Signature Font */
+        
+        :root {
+            --neon-blue: #00f3ff;
+            --neon-pink: #bc13fe;
+            --bg-dark: #030303;
+        }
+
+        body { 
+            font-family: 'Rajdhani', sans-serif; 
+            background-color: var(--bg-dark); 
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* --- AP LOADING STYLES --- */
+        #preloader {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .ap-loader-container {
+            position: relative;
+            font-family: 'Syncopate', sans-serif;
+            font-size: 8rem;
+            font-weight: 900;
+            line-height: 1;
+        }
+        .ap-outline {
+            color: transparent;
+            -webkit-text-stroke: 2px rgba(255, 255, 255, 0.3);
+        }
+        .ap-fill {
+            position: absolute;
+            top: 0; left: 0;
+            color: var(--neon-blue);
+            width: 0%;
+            overflow: hidden;
+            border-right: 4px solid var(--neon-pink);
+            white-space: nowrap;
+            filter: drop-shadow(0 0 15px var(--neon-blue));
+        }
+        .loader-bar-bg {
+            width: 200px;
+            height: 2px;
+            background: rgba(255,255,255,0.1);
+            margin-top: 30px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .loader-bar-fill { width: 0%; height: 100%; background: var(--neon-pink); }
+
+        /* --- GENERAL STYLES --- */
+        .glitch-wrapper { position: relative; display: inline-block; }
+        .glitch {
+            position: relative;
+            color: white;
+            font-family: 'Syncopate', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        .glitch::before, .glitch::after {
+            content: attr(data-text);
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        }
+        .glitch::before {
+            left: 2px; text-shadow: -1px 0 #ff00c1; clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim 5s infinite linear alternate-reverse;
+        }
+        .glitch::after {
+            left: -2px; text-shadow: -1px 0 #00fff9; clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim2 5s infinite linear alternate-reverse;
+        }
+        @keyframes glitch-anim {
+            0% { clip: rect(31px, 9999px, 94px, 0); transform: skew(0.85deg); }
+            5% { clip: rect(70px, 9999px, 11px, 0); transform: skew(0.85deg); }
+            10% { clip: rect(23px, 9999px, 86px, 0); transform: skew(0.2deg); }
+            100% { clip: rect(66px, 9999px, 12px, 0); transform: skew(0.67deg); }
+        }
+        @keyframes glitch-anim2 {
+            0% { clip: rect(65px, 9999px, 100px, 0); transform: skew(0.3deg); }
+            100% { clip: rect(4px, 9999px, 82px, 0); transform: skew(0.4deg); }
+        }
+
+        .tilt-card { transform-style: preserve-3d; transform: perspective(1000px); }
+        .tilt-content { transform: translateZ(20px); }
+
+        .floating-container {
+            position: fixed; bottom: 2rem; right: 2rem;
+            display: flex; flex-direction: column; gap: 1rem; z-index: 50;
+        }
+        .float-btn {
+            width: 3.5rem; height: 3.5rem; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+        }
+        .float-btn:hover { transform: scale(1.1); }
+        .btn-wa:hover { background: #00ff88; box-shadow: 0 0 20px #00ff88; color: black; border: none; }
+        .btn-ig:hover { background: #ff0055; box-shadow: 0 0 20px #ff0055; color: white; border: none; }
+
+        .masonry-grid { column-count: 1; column-gap: 1.5rem; }
+        @media (min-width: 640px) { .masonry-grid { column-count: 2; } }
+        @media (min-width: 1024px) { .masonry-grid { column-count: 3; } }
+        .masonry-item { break-inside: avoid; margin-bottom: 1.5rem; }
+
+        /* Signature Font Style */
+        .signature-font {
+            font-family: 'Great Vibes', cursive;
+            font-weight: 400;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="preloader">
+        <div class="ap-loader-container">
+            <div class="ap-outline">AP.</div>
+            <div class="ap-fill" id="ap-text-fill">AP.</div>
+        </div>
+        <div class="loader-bar-bg">
+            <div class="loader-bar-fill" id="loader-line"></div>
+        </div>
+        <div class="mt-4 text-gray-500 text-xs tracking-[0.5em] uppercase font-bold animate-pulse">
+            Loading Portfolio
+        </div>
+    </div>
+
+    <div id="mobile-menu" class="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex flex-col items-center justify-center transform translate-x-full transition-transform duration-500 ease-in-out">
+        <button id="close-menu-btn" class="absolute top-8 right-8 text-white hover:text-[var(--neon-pink)] transition">
+            <i data-lucide="x" class="w-10 h-10"></i>
+        </button>
+        <div class="flex flex-col gap-10 text-center text-3xl font-bold tracking-widest uppercase">
+            <a href="#work" onclick="toggleMenu()" class="hover:text-[var(--neon-blue)] transition">Work</a>
+            <a href="#about" onclick="toggleMenu()" class="hover:text-[var(--neon-blue)] transition">About</a>
+            <a href="#contact" onclick="toggleMenu()" class="hover:text-[var(--neon-pink)] transition">Contact</a>
+        </div>
+    </div>
+
+    <div class="floating-container">
+        <a href="https://instagram.com/Abhishekpal8853" target="_blank" class="float-btn btn-ig group">
+            <i data-lucide="instagram"></i>
+        </a>
+        <a href="https://wa.me/918853582191" target="_blank" class="float-btn btn-wa group animate-pulse">
+            <i data-lucide="message-circle"></i>
+        </a>
+    </div>
+
+    <nav class="fixed w-full z-40 p-6 flex justify-between items-center mix-blend-difference text-white">
+        <div class="text-xl font-bold tracking-widest">AP.</div>
+        <div class="hidden md:flex gap-8 text-sm tracking-[0.2em] font-bold">
+            <a href="#work" class="hover:text-[var(--neon-blue)] transition">WORK</a>
+            <a href="#contact" class="hover:text-[var(--neon-pink)] transition">CONTACT</a>
+        </div>
+        <button id="open-menu-btn" class="md:hidden text-white hover:text-[var(--neon-blue)] transition">
+            <i data-lucide="menu" class="w-8 h-8"></i>
+        </button>
+    </nav>
+
+    <header class="h-screen flex flex-col justify-center items-center text-center relative overflow-hidden">
+        <div class="absolute inset-0 z-0">
+             <div class="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black z-10"></div>
+             <img src="https://drive.google.com/thumbnail?id=1IKX-8M4dHsFRWENh-RwlLf355C91qICb&sz=w1000" class="w-full h-full object-cover opacity-40 scale-110" id="hero-bg">
+        </div>
+
+        <div class="z-20 px-4 hero-content opacity-0 translate-y-10">
+            <p class="text-[var(--neon-blue)] tracking-[0.5em] text-xs font-bold mb-4 animate-pulse">WELCOME TO THE PORTFOLIO OF</p>
+            <div class="glitch-wrapper mb-6">
+                <h1 class="glitch text-5xl md:text-8xl lg:text-9xl" data-text="ABHISHEK PAL">
+                    ABHISHEK PAL
+                </h1>
+            </div>
+            <p class="text-gray-400 max-w-md mx-auto mb-10 text-sm tracking-wider">
+                Professional Photography & Visual Arts based in India.
+            </p>
+            <a href="#work" class="inline-block border border-white/20 px-8 py-3 rounded-full hover:bg-white hover:text-black transition duration-500 tracking-[0.2em] text-xs font-bold uppercase">
+                Explore Gallery
+            </a>
+        </div>
+    </header>
+
+    <section id="work" class="py-24 px-4 bg-black">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-6xl font-black text-white/5 uppercase mb-12 text-right pointer-events-none select-none">Gallery</h2>
+            <div class="masonry-grid" id="gallery-grid"></div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-24 bg-[#050505] border-t border-white/5">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <h2 class="text-4xl md:text-6xl font-bold uppercase mb-2 text-white">Get in <span class="text-transparent bg-clip-text bg-gradient-to-r from-[var(--neon-blue)] to-[var(--neon-pink)]">Touch</span></h2>
+            <div class="w-24 h-1 bg-white/10 mx-auto mb-10 rounded-full"></div>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <a href="tel:+918853582191" class="p-8 border border-white/10 rounded-2xl hover:border-[var(--neon-blue)] hover:bg-[var(--neon-blue)]/5 transition group">
+                    <i data-lucide="phone" class="w-8 h-8 mx-auto mb-4 text-[var(--neon-blue)]"></i>
+                    <p class="text-2xl font-bold">8853582191</p>
+                    <span class="text-xs text-gray-500 uppercase tracking-widest group-hover:text-white">Call Now</span>
+                </a>
+                <a href="mailto:abhishekpal945027@gmail.com" class="p-8 border border-white/10 rounded-2xl hover:border-[var(--neon-pink)] hover:bg-[var(--neon-pink)]/5 transition group">
+                    <i data-lucide="mail" class="w-8 h-8 mx-auto mb-4 text-[var(--neon-pink)]"></i>
+                    <p class="text-xl font-bold">Email Me</p>
+                    <span class="text-xs text-gray-500 uppercase tracking-widest group-hover:text-white">Send Message</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-20 bg-black text-center relative overflow-hidden border-t border-white/10">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-[var(--neon-blue)]/5 rounded-full blur-[100px] pointer-events-none"></div>
+
+        <div class="relative z-10 flex flex-col items-center justify-center">
+            
+            <h2 class="signature-font text-6xl md:text-8xl text-[var(--neon-blue)] drop-shadow-[0_0_20px_rgba(0,243,255,0.4)] tracking-wide mb-4 transform -rotate-2">
+                Abhishek Pal
+            </h2>
+
+            <p class="text-gray-400 tracking-[0.8em] text-xs md:text-sm uppercase font-light pl-2">
+                Photography
+            </p>
+
+            <div class="mt-16 pt-8 border-t border-white/5 w-full max-w-xs mx-auto">
+                <p class="text-[10px] tracking-[0.2em] uppercase text-gray-600 font-medium">
+                    &copy; 2026 Abhishek Pal. <br> All Rights Reserved.
+                </p>
+            </div>
+
+        </div>
+    </footer>
+    <div id="lightbox" class="fixed inset-0 z-[10000] bg-black/95 hidden justify-center items-center backdrop-blur-xl">
+        <span class="absolute top-5 right-5 text-white text-4xl cursor-pointer hover:text-[var(--neon-pink)] transition" onclick="closeLightbox()">&times;</span>
+        <img id="lightbox-img" class="max-w-[90%] max-h-[90vh] shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/10 rounded-lg">
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        // AP Loading Animation
+        const loadingTl = gsap.timeline();
+        document.body.style.overflow = 'hidden';
+
+        loadingTl.to("#ap-text-fill", { width: "100%", duration: 2, ease: "power1.inOut" })
+        .to("#loader-line", { width: "100%", duration: 2, ease: "power1.inOut" }, "<")
+        .to(".ap-loader-container, .loader-bar-bg, .animate-pulse", { opacity: 0, duration: 0.5, delay: 0.2 })
+        .to("#preloader", { y: "-100%", duration: 1, ease: "power4.inOut", onComplete: () => { document.body.style.overflow = 'auto'; }})
+        .to(".hero-content", { y: 0, opacity: 1, duration: 1.5, ease: "power3.out" }, "-=0.5");
+
+        // Menu Logic
+        const menuBtn = document.getElementById('open-menu-btn');
+        const closeMenuBtn = document.getElementById('close-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        function toggleMenu() { mobileMenu.classList.toggle('translate-x-full'); }
+        menuBtn.addEventListener('click', toggleMenu);
+        closeMenuBtn.addEventListener('click', toggleMenu);
+
+        // Tilt Effect
+        function addTiltEffect(element) {
+            element.addEventListener('mousemove', (e) => {
+                const rect = element.getBoundingClientRect();
+                const x = e.clientX - rect.left; y = e.clientY - rect.top;
+                const xPct = x / rect.width; yPct = y / rect.height;
+                const xRotation = (yPct - 0.5) * -20; yRotation = (xPct - 0.5) * 20;
+                element.style.transform = `perspective(1000px) rotateX(${xRotation}deg) rotateY(${yRotation}deg) scale(1.02)`;
+            });
+            element.addEventListener('mouseleave', () => { element.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)'; });
+        }
+
+        // Gallery Data
+        const photoIDs = [
+            '1YvejImBQEB7bCP82K_Lujy94ypNTWfG7', '1IbTWD9jBmVQUlVwviqZ9PmoxJzEWBMX8', 
+            '1baMuHtdMZTdMmfT5DZkD8TYO6bHhG2ej', '1pi8790pyIperXx0MQwJkePS1jN0rEffC', 
+            '1iJ29W450I69-qiVbaf-xTHy5eadqvZsX', '1r3vQ_VdZradI0Fa4hLjcDuZnU7fBWpS8', 
+            '1_f7m1X4fNSJfVdStSe4vOpvjziBRyj6t', '1IHqWWvu3Z_nJk-cHmMQNMD3CRmF-FRY5', 
+            '1HOrXoBiwE_opfzjsgjRtoPW5gTIPpFDF', '1jR_6pQ1u33s0Y9S_77UFtzKFoM2ncTOS' 
+        ];
+        const allPhotos = [...photoIDs, ...photoIDs];
+        const grid = document.getElementById('gallery-grid');
+
+        allPhotos.forEach((id) => {
+            const div = document.createElement('div');
+            div.className = 'masonry-item group cursor-pointer tilt-card transition-all duration-100 ease-out';
+            div.onclick = () => openLightbox(`https://drive.google.com/thumbnail?id=${id}&sz=w2000`);
+            div.innerHTML = `
+                <div class="relative overflow-hidden rounded-lg border border-white/10 bg-white/5 tilt-content">
+                    <img src="https://drive.google.com/thumbnail?id=${id}&sz=w800" loading="lazy" class="w-full h-auto grayscale group-hover:grayscale-0 transition duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-4">
+                        <span class="text-[var(--neon-blue)] text-xs font-bold tracking-widest uppercase">View Shot</span>
+                    </div>
+                </div>`;
+            grid.appendChild(div);
+            if (window.innerWidth > 768) addTiltEffect(div);
+        });
+
+        gsap.registerPlugin(ScrollTrigger);
+        gsap.utils.toArray('.masonry-item').forEach((item, i) => {
+            gsap.from(item, {
+                scrollTrigger: { trigger: item, start: "top 85%" },
+                y: 100, opacity: 0, duration: 0.8, ease: "back.out(1.7)", delay: (i%3)*0.1
+            });
+        });
+
+        window.addEventListener('scroll', () => {
+            const scrolled = window.scrollY;
+            const heroBg = document.getElementById('hero-bg');
+            if(heroBg) heroBg.style.transform = `scale(1.1) translateY(${scrolled * 0.5}px)`;
+        });
+
+        function openLightbox(url) {
+            const lb = document.getElementById('lightbox');
+            document.getElementById('lightbox-img').src = url;
+            lb.style.display = 'flex';
+        }
+        function closeLightbox() {
+            document.getElementById('lightbox').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
